@@ -9,29 +9,34 @@ function handleError(error) {
   }
 }
 
-export async function searchMovies({ search = "" }) {
-  try {
-    const supabase = await createServerSupabaseClient();
+export async function searchMovies({ search, page, pageSize }) {
+  const supabase = await createServerSupabaseClient();
 
-    // 검색어가 없을 경우 모든 영화 반환
-    let query = supabase.from("movies").select("*");
-    
-    // 검색어가 있을 경우에만 like 조건 추가
-    if (search && search.trim() !== "") {
-      query = query.ilike('title', `%${search}%`);
-    }
+  const { data, count, error } = await supabase
+    .from("movies")
+    .select("*", { count: "exact" })
+    .like("title", `%${search}%`)
+    .range((page - 1) * pageSize, page * pageSize - 1);
 
-    const { data, error } = await query;
+  const hasNextPage = count > page * pageSize;
 
-    handleError(error);
-    
-    // 결과가 없을 경우 빈 배열 반환
-    return data || [];
-  } catch (error) {
-    console.error("영화 검색 중 오류 발생:", error);
-    // 오류가 발생해도 클라이언트에 빈 배열 반환
-    return [];
+  if (error) {
+    console.error(error);
+    return {
+      data: [],
+      count: 0,
+      page: null,
+      pageSize: null,
+      error,
+    };
   }
+
+  return {
+    data,
+    page,
+    pageSize,
+    hasNextPage,
+  };
 }
 
 export async function getMovie(id) {

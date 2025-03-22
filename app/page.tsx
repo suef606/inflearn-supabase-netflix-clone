@@ -1,7 +1,7 @@
-import UI from "../app/ui";
+import UI from "./ui";
 
 export const metadata = {
-  title: "TMDBFlix Clone",
+  title: "TMDBFLIX",
   description: "Netflix Clone using TMDB API",
 };
 

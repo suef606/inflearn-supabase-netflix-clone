@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "../components/material-tailwind-theme-provider";
 import ReactQueryClientProvider from "../config/ReactQueryClientProvider";
+import Header from "components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,9 @@ export default function RootLayout({
 
       <body className={inter.className}>
         <ReactQueryClientProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          
+          <ThemeProvider><Header/>
+          {children}</ThemeProvider>
         </ReactQueryClientProvider>
       </body>
     </html>

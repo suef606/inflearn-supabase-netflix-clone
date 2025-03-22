@@ -1,3 +1,4 @@
+import UI from "../app/ui";
 
 export const metadata = {
   title: "TMDBFlix Clone",
@@ -5,5 +6,5 @@ export const metadata = {
 };
 
 export default function Home() {
-  return <main>Netflix Clone</main>
+  return <UI />
 }
